@@ -3,7 +3,7 @@
 ## What's in this repository?
 In this repository you will find an empty Flask application base template to kickstart your custom app development.
 
-The Datarobot client is already set up for you to use, it uses the Application owners' API token by default. 
+The Datarobot client is already set up for you to use, it uses the Application creator's API token by default.
 
 ## How do I set it up?
 You can run the Flask app in DataRobot via Custom Applications or run the app directly locally.
@@ -21,7 +21,9 @@ export endpoint="$DATAROBOT_ENDPOINT"  # Example: https://app.datarobot.com/api/
 ```
 
 ## How to add and use runtime parameters?
-Create a metadata.yaml file in your application source folder. Here is an example of a DEPLOYMENT_ID:
+
+Create a metadata.yaml file in your application source folder. Here is an example of a DEPLOYMENT_ID which will create
+an environment variable called `MLOPS_RUNTIME_PARAM_DEPLOYMENT_ID`:
 ```yaml
 runtimeParameterDefinitions:
 - fieldName: DEPLOYMENT_ID
@@ -45,7 +47,7 @@ In the `./src/templates` directory you will find a sample index page. You can ad
 call them by adding new routes in the `flask_app.py` like this:
 ```python
 @flask_app.route("/new-page")
-def index_route():
+def new_page_route():
     return render_template("new-page.html", message="Hello World!")
 ```
 
