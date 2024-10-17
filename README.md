@@ -10,7 +10,7 @@ Be sure to define the required variables for the app to communicate with DataRob
 
 ```shell
 #start-app.sh
-export token="$DATAROBOT_API_TOKEN"  # Your API token from DR developer tools page
+export token="$DATAROBOT_API_TOKEN"  # Your API key, accessed from DataRobot's Developer Tools page
 export endpoint="$DATAROBOT_ENDPOINT"  # Example: https://app.datarobot.com/api/v2/
 ```
 
