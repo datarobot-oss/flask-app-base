@@ -9,11 +9,11 @@
     ],
     "source": {
       "repositoryUrl": "https://github.com/datarobot-oss/flask-app-base",
-      "releaseTag": "10.2.1"
+      "releaseTag": "10.2.2"
     },
     "previewImage": null
   },
   "templateType": "customApplicationTemplate",
   "templateSubType": "customApplicationTemplate",
-  "executionEnvironmentName": "[DataRobot] Python 3.12"
+  "executionEnvironmentName": "[DataRobot] Python 3.12 Applications Base"
 }
