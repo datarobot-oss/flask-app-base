@@ -1,6 +1,6 @@
 {
   "name": "Flask App Base",
-  "description": "Ready-to-use Flask template for a rapid custom application development",
+  "description": "Leverage DataRobot's out of the box Flask App example to help quickly and easily build highly customizable applications.",
   "templateMetadata": {
     "tags": [
       "Flask",
@@ -9,11 +9,11 @@
     ],
     "source": {
       "repositoryUrl": "https://github.com/datarobot-oss/flask-app-base",
-      "releaseTag": "10.2"
+      "releaseTag": "10.2.2"
     },
     "previewImage": null
   },
   "templateType": "customApplicationTemplate",
   "templateSubType": "customApplicationTemplate",
-  "executionEnvironmentName": "[DataRobot] Python 3.12"
+  "executionEnvironmentName": "[DataRobot] Python 3.12 Applications Base"
 }
