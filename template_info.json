@@ -9,7 +9,7 @@
     ],
     "source": {
       "repositoryUrl": "https://github.com/datarobot-oss/flask-app-base",
-      "releaseTag": "10.2.2"
+      "releaseTag": "11.0"
     },
     "previewImage": null
   },
