@@ -1,0 +1,11 @@
+# If you use the dr apps CLI ( available via pip install drapps ), and are on version >=10.2.6 then the CLI will not upload these files:
+.env
+.dr_apps_ignore
+.git/
+.github/
+__pycache__/
+        
+# Flask stuff:
+instance/
+.webassets-cache
+
