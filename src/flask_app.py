@@ -105,7 +105,9 @@ def api_version():
 
 @flask_app.route("/openapi.json")
 def openapi_spec():
-    return jsonify(OPENAPI_SPEC)
+    spec = dict(OPENAPI_SPEC)
+    spec["servers"] = [{"url": request.url_root.rstrip("/")}]
+    return jsonify(spec)
 
 
 @flask_app.route("/apidocs")
