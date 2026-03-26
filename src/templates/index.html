@@ -1,25 +1,246 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
-    <title>Flask Template</title>
-    <style>
-        html,body {
-            font-family: sans-serif;
-            display: grid;
-            justify-content: center;
-        }
-        .container {
-            padding-top: 4rem;
-            max-width: 40rem;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flask Application Template</title>
+  <link rel="icon" href="https://www.datarobot.com/favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Syntax highlight colours used by the JS highlighter -->
+  <style>
+    .hl-key  { color: #7dd3fc; }
+    .hl-str  { color: #86efac; }
+    .hl-num  { color: #fcd34d; }
+    .hl-bool { color: #f9a8d4; }
+    .hl-null { color: #94a3b8; }
+  </style>
 </head>
-<body>
-<div class="container">
-    <h1>{{ message }}</h1>
-</div>
+<body class="bg-gray-50 text-gray-900 text-sm antialiased">
+
+<!-- Header -->
+<header class="bg-white border-b border-gray-200 px-8 py-3 flex items-center gap-3">
+  <h1 class="font-semibold text-[15px]">Flask Application Template</h1>
+  <span class="text-[11px] font-bold uppercase tracking-widest bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full">DataRobot</span>
+</header>
+
+<main class="max-w-3xl mx-auto px-6 py-10 space-y-8">
+
+  <!-- Hero -->
+  <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+    <h2 class="text-xl font-semibold mb-2">Getting started</h2>
+    <p class="text-gray-500 max-w-[62ch] leading-relaxed">
+      This template gives you a working Flask application connected to the DataRobot platform.
+      The application token is injected automatically — no manual authentication needed.
+    </p>
+    <p class="text-gray-500 max-w-[62ch] leading-relaxed mt-2">
+      Add your own routes, call the DataRobot API through the built-in proxy endpoints,
+      and explore the full API surface via the Swagger docs below.
+    </p>
+  </div>
+
+  <!-- Endpoints -->
+  <section>
+    <h2 class="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3">Endpoints</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+
+      <a href="{{ url_for('health') }}" class="flex flex-col gap-1 bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-100 px-1.5 py-0.5 rounded self-start">GET</span>
+        <span class="font-mono font-semibold text-[13px]">/health</span>
+        <span class="text-gray-400 text-xs">Application health check</span>
+      </a>
+
+      <a href="{{ url_for('api_me') }}" class="flex flex-col gap-1 bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-100 px-1.5 py-0.5 rounded self-start">GET</span>
+        <span class="font-mono font-semibold text-[13px]">/api/me</span>
+        <span class="text-gray-400 text-xs">Current account info</span>
+      </a>
+
+      <a href="{{ url_for('api_projects') }}" class="flex flex-col gap-1 bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-100 px-1.5 py-0.5 rounded self-start">GET</span>
+        <span class="font-mono font-semibold text-[13px]">/api/projects</span>
+        <span class="text-gray-400 text-xs">List projects</span>
+      </a>
+
+      <a href="{{ url_for('api_deployments') }}" class="flex flex-col gap-1 bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-100 px-1.5 py-0.5 rounded self-start">GET</span>
+        <span class="font-mono font-semibold text-[13px]">/api/deployments</span>
+        <span class="text-gray-400 text-xs">List deployments</span>
+      </a>
+
+      <a href="{{ url_for('api_use_cases') }}" class="flex flex-col gap-1 bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-100 px-1.5 py-0.5 rounded self-start">GET</span>
+        <span class="font-mono font-semibold text-[13px]">/api/use-cases</span>
+        <span class="text-gray-400 text-xs">List use cases</span>
+      </a>
+
+      <a href="{{ url_for('apidocs') }}" class="flex flex-col gap-1 bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-1.5 py-0.5 rounded self-start">DOCS</span>
+        <span class="font-mono font-semibold text-[13px]">/apidocs</span>
+        <span class="text-gray-400 text-xs">Interactive Swagger UI</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- API Explorer -->
+  <section>
+    <h2 class="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3">API Explorer</h2>
+    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+
+      <!-- Tabs — data-path uses url_for so prefix is correct on any deployment -->
+      <div id="tabs" class="flex overflow-x-auto border-b border-gray-200">
+        <button class="tab shrink-0 px-4 py-2.5 font-mono text-xs font-medium text-indigo-600 border-b-2 border-indigo-500 bg-transparent cursor-pointer"
+                data-path="{{ url_for('health') }}" data-display="/health">GET /health</button>
+        <button class="tab shrink-0 px-4 py-2.5 font-mono text-xs font-medium text-gray-400 border-b-2 border-transparent bg-transparent cursor-pointer hover:text-gray-700"
+                data-path="{{ url_for('api_me') }}" data-display="/api/me">GET /api/me</button>
+        <button class="tab shrink-0 px-4 py-2.5 font-mono text-xs font-medium text-gray-400 border-b-2 border-transparent bg-transparent cursor-pointer hover:text-gray-700"
+                data-path="{{ url_for('api_projects') }}" data-display="/api/projects">GET /api/projects</button>
+        <button class="tab shrink-0 px-4 py-2.5 font-mono text-xs font-medium text-gray-400 border-b-2 border-transparent bg-transparent cursor-pointer hover:text-gray-700"
+                data-path="{{ url_for('api_deployments') }}" data-display="/api/deployments">GET /api/deployments</button>
+        <button class="tab shrink-0 px-4 py-2.5 font-mono text-xs font-medium text-gray-400 border-b-2 border-transparent bg-transparent cursor-pointer hover:text-gray-700"
+                data-path="{{ url_for('api_use_cases') }}" data-display="/api/use-cases">GET /api/use-cases</button>
+        <button class="tab shrink-0 px-4 py-2.5 font-mono text-xs font-medium text-gray-400 border-b-2 border-transparent bg-transparent cursor-pointer hover:text-gray-700"
+                data-path="{{ url_for('api_version') }}" data-display="/api/version">GET /api/version</button>
+      </div>
+
+      <!-- Body -->
+      <div class="p-5">
+        <div class="flex items-center gap-3 mb-4">
+          <span id="url-display" class="flex-1 font-mono text-xs text-gray-400 bg-gray-50 border border-gray-200 rounded-md px-3 py-2 truncate">/health</span>
+          <button id="send-btn" onclick="sendRequest()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-semibold rounded-md transition-colors cursor-pointer">Send</button>
+        </div>
+        <div class="bg-slate-900 rounded-lg p-4 min-h-[120px]">
+          <div id="response-meta" class="hidden flex items-center gap-2 mb-2">
+            <span id="status-pill" class="font-mono text-[11px] font-bold px-1.5 py-0.5 rounded"></span>
+            <span id="time-label" class="text-xs text-slate-400"></span>
+          </div>
+          <pre id="response-pre" class="font-mono text-xs text-slate-500 italic whitespace-pre-wrap break-words">Hit "Send" to try the endpoint.</pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DataRobot Resources -->
+  <section>
+    <h2 class="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3">DataRobot Resources</h2>
+    <div class="flex flex-col gap-2">
+
+      <a href="https://docs.datarobot.com/en/docs/wb-apps/app-templates/index.html" target="_blank" rel="noreferrer"
+         class="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3.5 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-lg">📖</span>
+        <span class="flex-1">
+          <div class="font-semibold text-[13px]">Application Templates</div>
+          <div class="text-xs text-gray-400">docs.datarobot.com/en/docs/wb-apps/app-templates</div>
+        </span>
+        <span class="text-gray-300 text-sm">↗</span>
+      </a>
+
+      <a href="https://docs.datarobot.com/en/docs/api/reference/public-api/custom_applications.html" target="_blank" rel="noreferrer"
+         class="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3.5 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-lg">⚙️</span>
+        <span class="flex-1">
+          <div class="font-semibold text-[13px]">Custom Application API Reference</div>
+          <div class="text-xs text-gray-400">docs.datarobot.com/en/docs/api/reference/public-api/custom_applications</div>
+        </span>
+        <span class="text-gray-300 text-sm">↗</span>
+      </a>
+
+      {% if dr_apidocs_url %}
+      <a href="{{ dr_apidocs_url }}" target="_blank" rel="noreferrer"
+         class="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3.5 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all no-underline text-inherit">
+        <span class="text-lg">🔌</span>
+        <span class="flex-1">
+          <div class="font-semibold text-[13px]">DataRobot Public API Reference</div>
+          <div class="text-xs text-gray-400">Interactive Swagger docs for your DataRobot cluster</div>
+        </span>
+        <span class="text-gray-300 text-sm">↗</span>
+      </a>
+      {% endif %}
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // activePath holds the full URL-for-resolved path (prefix-aware)
+  let activePath = '{{ url_for("health") }}';
+
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(b => {
+        b.classList.remove('text-indigo-600', 'border-indigo-500');
+        b.classList.add('text-gray-400', 'border-transparent');
+      });
+      btn.classList.add('text-indigo-600', 'border-indigo-500');
+      btn.classList.remove('text-gray-400', 'border-transparent');
+      activePath = btn.dataset.path;
+      // Show the short display path, not the full prefixed URL
+      document.getElementById('url-display').textContent = btn.dataset.display;
+      document.getElementById('response-meta').classList.add('hidden');
+      const pre = document.getElementById('response-pre');
+      pre.className = 'font-mono text-xs text-slate-500 italic whitespace-pre-wrap break-words';
+      pre.innerHTML = 'Hit "Send" to try the endpoint.';
+    });
+  });
+
+  function highlight(json) {
+    return JSON.stringify(json, null, 2)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/("(?:\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(?:true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, m => {
+        if (/^"/.test(m)) return /:$/.test(m) ? `<span class="hl-key">${m}</span>` : `<span class="hl-str">${m}</span>`;
+        if (/true|false/.test(m)) return `<span class="hl-bool">${m}</span>`;
+        if (/null/.test(m)) return `<span class="hl-null">${m}</span>`;
+        return `<span class="hl-num">${m}</span>`;
+      });
+  }
+
+  async function sendRequest() {
+    const btn = document.getElementById('send-btn');
+    const pre = document.getElementById('response-pre');
+    const meta = document.getElementById('response-meta');
+    const pill = document.getElementById('status-pill');
+    const timeLabel = document.getElementById('time-label');
+
+    btn.disabled = true;
+    btn.textContent = '…';
+    pre.className = 'font-mono text-xs text-slate-500 italic whitespace-pre-wrap break-words';
+    pre.innerHTML = 'Loading…';
+    meta.classList.add('hidden');
+
+    const t0 = performance.now();
+    try {
+      const resp = await fetch(activePath);
+      const ms = Math.round(performance.now() - t0);
+      const text = await resp.text();
+
+      pill.textContent = resp.status;
+      pill.className = resp.ok
+        ? 'font-mono text-[11px] font-bold px-1.5 py-0.5 rounded bg-green-900 text-green-300'
+        : 'font-mono text-[11px] font-bold px-1.5 py-0.5 rounded bg-red-900 text-red-300';
+      timeLabel.textContent = `${ms} ms`;
+      meta.classList.remove('hidden');
+      pre.className = 'font-mono text-xs text-slate-300 whitespace-pre-wrap break-words';
+      try {
+        pre.innerHTML = highlight(JSON.parse(text));
+      } catch {
+        pre.textContent = text;
+      }
+    } catch (err) {
+      const ms = Math.round(performance.now() - t0);
+      pill.textContent = 'ERR';
+      pill.className = 'font-mono text-[11px] font-bold px-1.5 py-0.5 rounded bg-red-900 text-red-300';
+      timeLabel.textContent = `${ms} ms`;
+      meta.classList.remove('hidden');
+      pre.className = 'font-mono text-xs text-red-400 whitespace-pre-wrap break-words';
+      pre.textContent = String(err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send';
+    }
+  }
+</script>
+
 </body>
 </html>
