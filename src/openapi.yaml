@@ -1,0 +1,78 @@
+openapi: "3.0.0"
+
+info:
+  title: Flask Application Template
+  version: "1.0.0"
+  description: >
+    Example API built on the DataRobot Flask template.
+    Endpoints proxy the DataRobot public API using the
+    application-scoped token injected by the platform.
+
+paths:
+  /health:
+    get:
+      summary: Application health check
+      tags: [Health]
+      responses:
+        "200":
+          description: Application is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    example: "2025-01-01T00:00:00+00:00"
+
+  /api/me:
+    get:
+      summary: Current account information
+      tags: [DataRobot]
+      responses:
+        "200":
+          description: Account info for the token owner
+
+  /api/projects:
+    get:
+      summary: List DataRobot projects
+      tags: [DataRobot]
+      parameters:
+        - { name: limit, in: query, schema: { type: integer } }
+        - { name: offset, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Paginated list of projects
+
+  /api/deployments:
+    get:
+      summary: List DataRobot deployments
+      tags: [DataRobot]
+      parameters:
+        - { name: limit, in: query, schema: { type: integer } }
+        - { name: offset, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Paginated list of deployments
+
+  /api/use-cases:
+    get:
+      summary: List DataRobot use cases
+      tags: [DataRobot]
+      parameters:
+        - { name: limit, in: query, schema: { type: integer } }
+        - { name: offset, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: Paginated list of use cases
+
+  /api/version:
+    get:
+      summary: DataRobot API version information
+      tags: [DataRobot]
+      responses:
+        "200":
+          description: API version details
