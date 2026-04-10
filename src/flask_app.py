@@ -9,20 +9,16 @@ import yaml
 from flask import Flask, jsonify, render_template, request
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from config import Config
-
 logger = logging.getLogger(__name__)
 
-_config = Config()
-
 # Derive the cluster-specific API docs URL (e.g. https://app.datarobot.com/apidocs/)
-_dr_endpoint = datarobot.Client().endpoint.rstrip("/")
+_dr_endpoint = os.getenv("DATAROBOT_ENDPOINT", "").rstrip("/")
 _parsed = urlparse(_dr_endpoint)
 DR_APIDOCS_URL = f"{_parsed.scheme}://{_parsed.netloc}/apidocs/" if _parsed.netloc else None
 
 # BASE_PATH is injected by the DataRobot platform (e.g. "custom_applications/abc123").
 # Setting SCRIPT_NAME makes url_for() generate prefix-aware URLs.
-_BASE_PATH = _config.base_path.strip("/")
+_BASE_PATH = os.getenv("BASE_PATH", "").strip("/")
 _SCRIPT_NAME = f"/{_BASE_PATH}" if _BASE_PATH else ""
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
