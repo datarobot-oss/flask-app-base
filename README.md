@@ -1,45 +1,71 @@
 # Flask app base template
 
-In this repository you will find an empty Flask application base template to kickstart custom app development. The Datarobot client is already set up for you to use, it uses the Application creator's API key by default.
+A Flask application template for building Custom Applications on DataRobot. DataRobot credentials and runtime parameters are read automatically — no manual `os.getenv()` or shell exports required.
 
 ## Setup
 
-You can run the Flask app in DataRobot using a custom application or by running the app locally. Custom applications can be created either via the NextGen Registry's **Applications** page or by using [DRApps](https://github.com/datarobot/dr-apps/blob/main/README.md).
+Run locally or deploy as a DataRobot Custom Application via the Registry's **Applications** page or [DRApps](https://github.com/datarobot/dr-apps/blob/main/README.md).
 
-Be sure to define the required variables for the app to communicate with DataRobot. If you run the app locally or in another environment than a custom application, you'll need to set the env variables. When this app is run via a custom application, the variables are set automatically.
+**Dependencies** are managed with [uv](https://github.com/astral-sh/uv):
 
 ```shell
-#start-app.sh
-export token="$DATAROBOT_API_TOKEN"  # Your API key, accessed from DataRobot's Developer Tools page
-export endpoint="$DATAROBOT_ENDPOINT"  # Example: https://app.datarobot.com/api/v2/
+uv sync
+uv run gunicorn flask_app:flask_app --bind :8080
 ```
 
-## Add and use runtime parameters
+When running locally, set the DataRobot credentials as environment variables:
 
-To add runtime parameters, create a `metadata.yaml` file in your application source folder. Here is an example of a `DEPLOYMENT_ID` that creates an environment variable called `MLOPS_RUNTIME_PARAM_DEPLOYMENT_ID`:
+```shell
+export DATAROBOT_API_TOKEN="<your API key>"
+export DATAROBOT_ENDPOINT="https://app.datarobot.com/api/v2"
+```
+
+When deployed as a Custom Application, these are injected automatically.
+
+## Configuration
+
+App settings are defined in `config.py` using `DataRobotAppFrameworkBaseSettings`, which automatically reads environment variables, `.env` files, and DataRobot Runtime Parameters:
+
+```python
+from datarobot.core.config import DataRobotAppFrameworkBaseSettings
+
+class Config(DataRobotAppFrameworkBaseSettings):
+    base_path: str = ""
+    my_setting: str = "default"
+```
+
+Use `Config()` anywhere in your app:
+
+```python
+from config import Config
+
+config = Config()
+print(config.my_setting)
+```
+
+## Add runtime parameters
+
+Declare parameters in `metadata.yaml` in your application source folder:
 
 ```yaml
 runtimeParameterDefinitions:
-- fieldName: DEPLOYMENT_ID
-  type: string
+  - fieldName: MY_SETTING
+    type: string
+    defaultValue: "default"
 ```
 
-Once this file is part of your application source in DataRobot, it displays the new runtime parameter(s) as part of the
-app configuration.
+Add the corresponding field to `Config` in `config.py`:
 
-To use the parameters, DataRobot recommends you add them via `start-app.sh`. Add the following conditional export before `gunicorn` starts:
-
-```shell
-if [ -n "$MLOPS_RUNTIME_PARAM_DEPLOYMENT_ID" ]; then
-  export deployment_id="$MLOPS_RUNTIME_PARAM_DEPLOYMENT_ID"
-fi
+```python
+class Config(DataRobotAppFrameworkBaseSettings):
+    my_setting: str = "default"
 ```
 
-Now you can use `os.getenv("deployment_id")` within your application code.
+`Config()` will read the runtime parameter value automatically — no `start-app.sh` changes needed.
 
 ## Add pages
 
-You can find a sample index page in the `./src/templates` directory. You can add additional HTML templates here, and call them by adding new routes in the `flask_app.py`, as shown in the example below:
+Sample templates live in `./src/templates`. Add new routes in `flask_app.py`:
 
 ```python
 @flask_app.route("/new-page")
@@ -47,7 +73,7 @@ def new_page_route():
     return render_template("new-page.html", message="Hello World!")
 ```
 
-Contents of new-page.html:
+Contents of `new-page.html`:
 
 ```html
 <!doctype html>
