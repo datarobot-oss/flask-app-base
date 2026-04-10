@@ -9,16 +9,15 @@ import yaml
 from flask import Flask, jsonify, render_template, request
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+from config import Config
+
 logger = logging.getLogger(__name__)
 
-# Derive the cluster-specific API docs URL (e.g. https://app.datarobot.com/apidocs/)
-_dr_endpoint = os.getenv("DATAROBOT_ENDPOINT", "").rstrip("/")
-_parsed = urlparse(_dr_endpoint)
-DR_APIDOCS_URL = f"{_parsed.scheme}://{_parsed.netloc}/apidocs/" if _parsed.netloc else None
-
 # BASE_PATH is injected by the DataRobot platform (e.g. "custom_applications/abc123").
+# Config reads it from the environment via DataRobotAppFrameworkBaseSettings.
 # Setting SCRIPT_NAME makes url_for() generate prefix-aware URLs.
-_BASE_PATH = os.getenv("BASE_PATH", "").strip("/")
+_config = Config()
+_BASE_PATH = _config.base_path.strip("/")
 _SCRIPT_NAME = f"/{_BASE_PATH}" if _BASE_PATH else ""
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -69,7 +68,13 @@ def _proxy(path):
 
 @flask_app.route("/")
 def index():
-    return render_template("index.html", dr_apidocs_url=DR_APIDOCS_URL)
+    try:
+        dr = datarobot.Client()
+        parsed = urlparse(dr.endpoint.rstrip("/"))
+        dr_apidocs_url = f"{parsed.scheme}://{parsed.netloc}/apidocs/"
+    except Exception:
+        dr_apidocs_url = None
+    return render_template("index.html", dr_apidocs_url=dr_apidocs_url)
 
 
 @flask_app.route("/health")
