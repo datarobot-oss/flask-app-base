@@ -1,27 +1,27 @@
 import logging
-import os
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 
-import yaml
+import datarobot
 import requests
+import yaml
 from flask import Flask, jsonify, render_template, request
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+from config import Config
+
 logger = logging.getLogger(__name__)
 
-# DataRobot credentials injected by the platform
-DR_TOKEN = os.getenv("DATAROBOT_API_TOKEN")
-DR_ENDPOINT = os.getenv("DATAROBOT_ENDPOINT", "").rstrip("/")
+_config = Config()
 
 # Derive the cluster-specific API docs URL (e.g. https://app.datarobot.com/apidocs/)
-_parsed = urlparse(DR_ENDPOINT)
+_dr_endpoint = datarobot.Client().endpoint.rstrip("/")
+_parsed = urlparse(_dr_endpoint)
 DR_APIDOCS_URL = f"{_parsed.scheme}://{_parsed.netloc}/apidocs/" if _parsed.netloc else None
 
 # BASE_PATH is injected by the DataRobot platform (e.g. "custom_applications/abc123").
 # Setting SCRIPT_NAME makes url_for() generate prefix-aware URLs.
-_BASE_PATH = os.getenv("BASE_PATH", "").strip("/")
-_SCRIPT_NAME = f"/{_BASE_PATH}" if _BASE_PATH else ""
+_SCRIPT_NAME = f"/{_config.base_path.strip('/')}" if _config.base_path else ""
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 flask_app = Flask(__name__, template_folder=os.path.join(base_dir, "templates"))
@@ -48,10 +48,11 @@ with open(os.path.join(base_dir, "openapi.yaml")) as _f:
 def _proxy(path):
     """Proxy a GET request to the DataRobot API."""
     try:
-        url = f"{DR_ENDPOINT}/{path.lstrip('/')}"
+        dr = datarobot.Client()
+        url = f"{dr.endpoint.rstrip('/')}/{path.lstrip('/')}"
         resp = requests.get(
             url,
-            headers={"Authorization": f"Bearer {DR_TOKEN}"},
+            headers={"Authorization": f"Bearer {dr.token}"},
             params=request.args.to_dict() or None,
             timeout=30,
         )
