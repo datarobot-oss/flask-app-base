@@ -22,7 +22,8 @@ DR_APIDOCS_URL = f"{_parsed.scheme}://{_parsed.netloc}/apidocs/" if _parsed.netl
 
 # BASE_PATH is injected by the DataRobot platform (e.g. "custom_applications/abc123").
 # Setting SCRIPT_NAME makes url_for() generate prefix-aware URLs.
-_SCRIPT_NAME = f"/{_config.base_path.strip('/')}" if _config.base_path else ""
+_BASE_PATH = _config.base_path.strip("/")
+_SCRIPT_NAME = f"/{_BASE_PATH}" if _BASE_PATH else ""
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 flask_app = Flask(__name__, template_folder=os.path.join(base_dir, "templates"))
